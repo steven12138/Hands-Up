@@ -4,16 +4,13 @@
   <meta charset="utf-8">
   <title>Hello World</title>
 </head>
-    <script src="./pixi4.8.2.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
+	<script src="./pixi4.8.2.js"></script>
 <body>
   <script type="text/javascript">
-    let type = "WebGL"
-    if(!PIXI.utils.isWebGLSupported()){
-      type = "canvas"
-    }
+    let app = new PIXI.Application({width: 256, height: 256});
+	document.body.appendChild(app.view);
 
-    PIXI.utils.sayHello(type)
   </script>
 </body>
 </html>
