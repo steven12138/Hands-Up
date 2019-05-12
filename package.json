@@ -1,0 +1,25 @@
+{
+  "name": "hands-up",
+  "version": "1.0.0",
+  "description": "io game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/steven12138/Hands-Up.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/steven12138/Hands-Up/issues"
+  },
+  "homepage": "https://github.com/steven12138/Hands-Up#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "pixi": "^0.3.1",
+    "pixi.js": "^5.0.2",
+    "socket.io": "^2.2.0"
+  }
+}
