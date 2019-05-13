@@ -1,5 +1,6 @@
 var DeltaX=0;
 var DeltaY=0;
+var MouseAngle=0;
 if(window.event)
 {
 	alert("Do not use IE");
@@ -37,4 +38,16 @@ function keyup(event)
 		DeltaY=0;
 	if(KeyNum=='A'||KeyNum=='D')
 		DeltaX=0;
+}
+
+function GetMouseAngle(event) {
+	var MouseX=event.clientX;
+	var MouseY=event.clientY;
+	var LenX=MouseX-(ClientWidth/2-(57/2));
+	var LenY=MouseY-(ClientHeight/2-(67/2));
+	var TanMouseAngle=LenX*1.0/LenY;
+	MouseAngle=-Math.atan(TanMouseAngle);
+	if(MouseY>(ClientHeight/2-(67/2)))
+		MouseAngle+=Math.PI;
+
 }
