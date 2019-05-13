@@ -6,18 +6,22 @@ function sendToServer(subName, Dict){
     socket.emit(subName, Dict);
 }
 
-socket.on('syncPolicePosition',function(d){
-    curPosition[d["name"]]["x"] = d["position"]["x"];
-    curPosition[d["name"]]["y"] = d["position"]["y"];
+/*
+syncPosition(d)事件
+作用：把d中的位置信息同步到本地的curPosition数组
+参数：d(dict)
+Keys:
+    name(str): 同步对象的名称，如Police,Thief,TrashC
+    ID(int): 同步对象的序号，0,1,2
+    position(dict):
+        x(positive int)
+        y(positive int)
+*/
+socket.on('syncPosition',function(d){
+    curPosition[d["name"]][d["ID"]]["x"] = d["position"]["x"];
+    curPosition[d["name"]][d["ID"]]["y"] = d["position"]["y"];
 })
-socket.on('syncThiefPosition',function(d){
-    curPosition[d["name"]][d["ThiefID"]]["x"] = d["position"]["x"];
-    curPosition[d["name"]][d["ThiefID"]]["y"] = d["position"]["y"];
-})
-socket.on('syncTrashCanPosition',function(d){
-    curPosition[d["name"]][d["TrashCanID"]]["x"] = d["position"]["x"];
-    curPosition[d["name"]][d["TrashCanID"]]["y"] = d["position"]["y"];
-})
+
 socket.on('sync_init',function(d){
     //
 })
