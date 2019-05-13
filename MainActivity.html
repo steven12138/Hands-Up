@@ -1,17 +1,19 @@
 <!doctype html>
 <html>
 <head>
+  <style type="text/css">
+  	html,body
+  	{
+  		height:98%;
+  	}
+  </style>
   <meta charset="utf-8">
   <title>Hello World</title>
 </head>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="./pixi4.8.2.js"></script>
 	<script src="./control.js"></script>
-<body>
-  <script type="text/javascript">
-    let app = new PIXI.Application({width: 256, height: 256});
-	document.body.appendChild(app.view);
-
-  </script>
+<body onkeydown="keydown(event)" onkeyup="keyup(event)">
+	<script src="./renderer.js"></script>
 </body>
 </html>
