@@ -14,6 +14,9 @@ let Map;
 
 PIXI.loader
 	.add("police-normal","Image/MainChara-police-normal.png")
+	.add("police-lean","Image/MainChara-police-lean.png")
+	.add("thief-normal","Image/MainChara-thief-normal")
+	.add("theif-lean","Image/MainChara-thief-lean")
 	.add("Map","Image/testmap.png")
 	.load(setup);
 
