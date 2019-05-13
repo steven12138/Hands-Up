@@ -1,15 +1,18 @@
-var DeltaX=0;
-var DeltaY=0;
-var MouseAngle=0;
+var DeltaX=0;  //player X Delta
+var DeltaY=0;  //player Y Delta
+var MouseAngle=0;  //player rotation angle
 if(window.event)
 {
 	alert("Do not use IE");
 }
+
+//function will run when keydown
 function keydown(event)
 {
 	var KeyNum;
-	KeyNum=event.which;
+	KeyNum=event.which;//get keyname
 	var KeyName=String.fromCharCode(KeyNum);
+	//change DeltaX and DeltaY
 	if(KeyName=='w')
 		DeltaY=-5;
 	if(KeyName=='s')
@@ -27,6 +30,8 @@ function keydown(event)
 	if(KeyName=='D')
 		DeltaX=5;
 }
+
+//the function will run when key up
 function keyup(event)
 {
 	var KeyNum;
@@ -34,12 +39,16 @@ function keyup(event)
 	if(KeyNum>91)
 		KeyNum-=32;
 	KeyNum=String.fromCharCode(KeyNum);
+	//get key name
+	//set delta to 0 to stop the charactor move.
 	if(KeyNum=='W'||KeyNum=='S')
 		DeltaY=0;
 	if(KeyNum=='A'||KeyNum=='D')
 		DeltaX=0;
 }
 
+
+//using atan to caculate the angle the charactor should rotate.
 function GetMouseAngle(event) {
 	var MouseX=event.clientX;
 	var MouseY=event.clientY;
