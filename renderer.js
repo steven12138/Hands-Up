@@ -14,6 +14,9 @@ let Map;
 
 PIXI.loader
 	.add("police-normal","Image/MainChara-police-normal.png")
+	.add("police-lean","Image/MainChara-police-lean.png")
+	.add("thief-normal","Image/MainChara-thief-normal")
+	.add("theif-lean","Image/MainChara-thief-lean")
 	.add("Map","Image/testmap.png")
 	.load(setup);
 
@@ -33,14 +36,22 @@ function AddMap()
 function AddMainCharacter()
 {
 	MainCharacter = new PIXI.Sprite(PIXI.Texture.fromImage("police-normal"));
-	MainCharacter.x=ClientWidth/2-67;
-	MainCharacter.y=ClientHeight/2-57;
+	MainCharacter.anchor.x=0.5;
+	MainCharacter.anchor.y=0.5;
+	MainCharacter.x=ClientWidth/2-(57/2);
+	MainCharacter.y=ClientHeight/2-(67/2);
   	app.stage.addChild(MainCharacter);
 }
 
 function GameLoop(delta)
 {
 	MoveMainCharacter();
+	UpdateMainCharacterRotate();
+}
+
+function UpdateMainCharacterRotate()
+{
+	MainCharacter.rotation=MouseAngle;
 }
 
 function MoveMainCharacter()
