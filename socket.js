@@ -1,6 +1,5 @@
-var io = require('socket.io');
-var serverIp;
-var socket = io.connect(serverIp);
+var socket=io("127.0.0.1:80");
+//修正，客户端直接即可
 
 function sendToServer(subName, Dict){
     socket.emit(subName, Dict);
