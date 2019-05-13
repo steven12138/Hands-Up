@@ -12,7 +12,7 @@ document.body.appendChild(app.view);
 let MainCharacter;
 
 PIXI.loader
-	.add("Image/MainCharacter.jpg")
+	.add("police-normal","Image/MainChara-police-normal.png")
 	.load(setup);
 
 function setup()
@@ -23,7 +23,7 @@ function setup()
 
 function AddMainCharacter()
 {
-	MainCharacter = new PIXI.Sprite(PIXI.Texture.fromImage("Image/MainCharacter.jpg"));
+	MainCharacter = new PIXI.Sprite(PIXI.Texture.fromImage("police-normal"));
   	app.stage.addChild(MainCharacter);
 }
 
