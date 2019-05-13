@@ -10,20 +10,31 @@ let app = new PIXI.Application({
 document.body.appendChild(app.view);
 
 let MainCharacter;
+let Map;
 
 PIXI.loader
 	.add("police-normal","Image/MainChara-police-normal.png")
+	.add("Map","Image/testmap.png")
 	.load(setup);
 
 function setup()
 {
+	AddMap();
 	AddMainCharacter();
 	app.ticker.add(delta=>GameLoop(delta))
+}
+
+function AddMap()
+{
+	Map = new PIXI.Sprite(PIXI.Texture.fromImage("Map"));
+	app.stage.addChild(Map);
 }
 
 function AddMainCharacter()
 {
 	MainCharacter = new PIXI.Sprite(PIXI.Texture.fromImage("police-normal"));
+	MainCharacter.x=ClientWidth/2-67;
+	MainCharacter.y=ClientHeight/2-57;
   	app.stage.addChild(MainCharacter);
 }
 
@@ -34,6 +45,6 @@ function GameLoop(delta)
 
 function MoveMainCharacter()
 {
-	MainCharacter.x+=DeltaX;
-	MainCharacter.y+=DeltaY;
+	Map.x-=DeltaX;
+	Map.y-=DeltaY;
 }
