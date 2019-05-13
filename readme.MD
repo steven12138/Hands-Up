@@ -8,3 +8,5 @@
 ![Thief](./Image/MainChara-thief-lean.png)
 ![Thief](./Image/MainChara-thief-normal.png)
 ![Thief](./Image/PoliceCar.png)
+# 2019.5.13-3加入了警察的旋转，地图的网格。添加了多个注释，加入socketio通讯
+地图过大不适宜展示
