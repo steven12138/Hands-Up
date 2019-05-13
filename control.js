@@ -18,13 +18,13 @@ function keydown(event)
 	if(KeyName=='d')
 		DeltaX=5;
 	if(KeyName=='W')
-		DeltaY=-10;
+		DeltaY=-5;
 	if(KeyName=='S')
-		DeltaY=10;
+		DeltaY=5;
 	if(KeyName=='A')
-		DeltaX=-10;
+		DeltaX=-5;
 	if(KeyName=='D')
-		DeltaX=10;
+		DeltaX=5;
 }
 function keyup(event)
 {
