@@ -17,14 +17,6 @@ function keydown(event)
 		DeltaX=-5;
 	if(KeyName=='d')
 		DeltaX=5;
-	if(KeyName=='W')
-		DeltaY=-10;
-	if(KeyName=='S')
-		DeltaY=10;
-	if(KeyName=='A')
-		DeltaX=-10;
-	if(KeyName=='D')
-		DeltaX=10;
 }
 function keyup(event)
 {
