@@ -11,4 +11,4 @@ write by socketio and pixijs
 # 2019.5.13-3 socket functino
 # 2019.5.13-4 add map texture
 # 2019.5.14-1 update map texture and add wall on it
-![Map](./Image/Map.png)
+## We can not put map here please open (./Image/Map)
