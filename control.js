@@ -58,5 +58,4 @@ function GetMouseAngle(event) {
 	MouseAngle=-Math.atan(TanMouseAngle);
 	if(MouseY>(ClientHeight/2-(67/2)))
 		MouseAngle+=Math.PI;
-
 }
