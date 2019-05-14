@@ -128,18 +128,19 @@ function MoveMainCharacter()
 {
 	var MoveDeltaX=DeltaX;
 	var MoveDeltaY=DeltaY;
+	//x axis out of the map
 	if(parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))>=6200||
 	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))>=6200||
 	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))>=6200||
 	   parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))>=6200||
-	   parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))<=1||
-	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))<=1||
-	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))<=1||
-	   parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))<=1)
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))<=0||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))<=0||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))<=0||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))<=0)
 	{
-		alert("Xtest");
 		MoveDeltaX=0;
 	}
+	//y axis out of the map, already success
 	if(parseInt(-(Map.y-DeltaY-(ClientHeight/2-2*(67/2))))>=3250||
 	   parseInt(-(Map.y-DeltaY-(ClientHeight/2)))>=3250||
 	   parseInt(-(Map.y-DeltaY-(ClientHeight/2-2*(67/2))))>=3250||
