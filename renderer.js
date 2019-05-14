@@ -4,6 +4,11 @@ var MainCharacterY=100;
 var ClientWidth = document.body.clientWidth;
 var ClientHeight = document.body.clientHeight;
 var Sqrt_2=Math.sqrt(2);
+var Type=Math.floor((Math.random()*2)+1);
+if(Type==1)
+var MainCharacterType="police";
+else
+var MainCharacterType="thief";
 
 //crate app to draw on it
 let app = new PIXI.Application({
@@ -16,7 +21,8 @@ document.body.appendChild(app.view);
 
 
 //character and map object
-let MainCharacter;
+let MainCharacterNormal;
+let MainCharacterLean;
 let Map;
 
 //load texture
@@ -24,7 +30,7 @@ PIXI.loader
 	.add("police-normal","Image/MainChara-police-normal.png")
 	.add("police-lean","Image/MainChara-police-lean.png")
 	.add("thief-normal","Image/MainChara-thief-normal.png")
-	.add("theif-lean","Image/MainChara-thief-lean.png")
+	.add("thief-lean","Image/MainChara-thief-lean.png")
 	.add("Map","Image/Map.png")
 	.add("Police-car","Image/PoliceCar.png")
 	.load(setup); //run setup() after finish loading
@@ -34,7 +40,7 @@ PIXI.loader
 function setup()
 {
 	AddMap();  //add map to the webside
-	AddMainCharacter();//add character to the webside
+	AddMainCharacter(MainCharacterType);//add character to the webside
 	app.ticker.add(delta=>GameLoop(delta)) //run gameloop() in each 1/60 sec
 }
 
@@ -66,14 +72,25 @@ function AddMap()
 	app.stage.addChild(Map);//add to the app
 }
 
-function AddMainCharacter()
+function AddMainCharacter(MainCharacterType)
 {
-	MainCharacter = new PIXI.Sprite(PIXI.Texture.fromImage("police-normal"));//new PIXI object
-	MainCharacter.anchor.x=0.5;//set anchor
-	MainCharacter.anchor.y=0.5;
-	MainCharacter.x=ClientWidth/2-(57/2);//set position
-	MainCharacter.y=ClientHeight/2-(67/2);
-  	app.stage.addChild(MainCharacter);//add to the app
+	MainCharacterNormal = new PIXI.Sprite(PIXI.Texture.fromImage(MainCharacterType+"-normal"));//new PIXI object
+	MainCharacterLean = new PIXI.Sprite(PIXI.Texture.fromImage(MainCharacterType+"-lean"));//new PIXI object
+	MainCharacterNormal.anchor.x=0.5;//set anchor
+	MainCharacterNormal.anchor.y=0.5;
+	MainCharacterNormal.x=ClientWidth/2-(57/2);//set position
+	MainCharacterNormal.y=ClientHeight/2-(67/2);
+	MainCharacterNormal.visible=true;
+	//
+	MainCharacterLean.anchor.x=0.5;//set anchor
+	MainCharacterLean.anchor.y=0.5;
+	MainCharacterLean.x=ClientWidth/2-(57/2);//set position
+	MainCharacterLean.y=ClientHeight/2-(67/2);
+	MainCharacterLean.visible=false;
+
+
+	app.stage.addChild(MainCharacterNormal);
+	app.stage.addChild(MainCharacterLean);//add to the app
 }
 
 
@@ -82,13 +99,28 @@ function GameLoop(delta)
 {
 	MoveMainCharacter();
 	UpdateMainCharacterRotate();
+	ChangeMainCharacterAction();
 }
 
+function ChangeMainCharacterAction()
+{
+	if(MainCharaLeanStatus)
+	{
+		MainCharacterLean.visible=true;
+		MainCharacterNormal.visible=false;
+	}
+	else
+	{
+		MainCharacterLean.visible=false;
+		MainCharacterNormal.visible=true;
+	}
+}
 
 //let the character face to your mouse
 function UpdateMainCharacterRotate()
 {
-	MainCharacter.rotation=MouseAngle;
+	MainCharacterNormal.rotation=MouseAngle;
+	MainCharacterLean.rotation=MouseAngle;
 }
 
 //move map to let player think the main character is moving

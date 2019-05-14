@@ -1,6 +1,8 @@
 var DeltaX=0;  //player X Delta
 var DeltaY=0;  //player Y Delta
 var MouseAngle=0;  //player rotation angle
+var MainCharaLeanStatus=false;
+
 if(window.event)
 {
 	alert("Do not use IE");
@@ -29,6 +31,8 @@ function keydown(event)
 		DeltaX=-5;
 	if(KeyName=='D')
 		DeltaX=5;
+	if(KeyName=='F')
+		alert(MainCharaLeanStatus);
 }
 
 //the function will run when key up
@@ -58,4 +62,14 @@ function GetMouseAngle(event) {
 	MouseAngle=-Math.atan(TanMouseAngle);
 	if(MouseY>(ClientHeight/2-(67/2)))
 		MouseAngle+=Math.PI;
+}
+
+function MouseDown(event)
+{
+	MainCharaLeanStatus=true;
+}
+
+function MouseUp(event)
+{
+	MainCharaLeanStatus=false;
 }
