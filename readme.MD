@@ -1,12 +1,13 @@
 # Hands Up
-这是一个io类型的游戏
-使用nodejs开发
-前端使用pixijs渲染
-# 2019.5.13-1加入Police形象,移动功能测试
+锟斤拷锟斤拷一锟斤拷io锟斤拷锟酵碉拷锟斤拷戏
+使锟斤拷nodejs锟斤拷锟斤拷
+前锟斤拷使锟斤拷pixijs锟斤拷染
+# 2019.5.13-1锟斤拷锟斤拷Police锟斤拷锟斤拷,锟狡讹拷锟斤拷锟杰诧拷锟斤拷
 ![Police](./Image/MainChara-police.png)
-# 2019.5.13-2加入小偷和警车
+# 2019.5.13-2锟斤拷锟斤拷小偷锟酵撅拷锟斤拷
 ![Thief](./Image/MainChara-thief-lean.png)
 ![Thief](./Image/MainChara-thief-normal.png)
 ![Thief](./Image/PoliceCar.png)
-# 2019.5.13-3加入了警察的旋转，地图的网格。添加了多个注释，加入socketio通讯
-地图过大不适宜展示
+# 2019.5.13-3 socket锟斤拷
+# 2019.5.13-3锟斤拷锟斤拷锟剿撅拷锟斤拷锟斤拷锟阶拷锟斤拷锟酵硷拷锟斤拷锟斤拷锟斤拷锟斤拷锟剿讹拷锟阶拷停锟斤拷锟斤拷锟絪ocketio通讯
+锟斤拷图锟斤拷锟斤拷锟斤拷锟斤拷展示
