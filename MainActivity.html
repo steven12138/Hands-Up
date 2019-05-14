@@ -6,15 +6,15 @@
   	{
   		height:98%;
   	}
-  </style>
+  </style><!-- Set the html to let it fill all screen-->
   <meta charset="utf-8">
   <title>Hands-Up</title>
 </head>
-	<script src="/socket.io/socket.io.js"></script>
-	<script src="./pixi4.8.2.js"></script>
-	<script src="./control.js"></script>
-	<script src="./socket.js"></script>
-<body onkeydown="keydown(event)" onkeyup="keyup(event)" onmousemove="GetMouseAngle(event)">
-	<script src="./renderer.js"></script>
+	<script src="/socket.io/socket.io.js"></script><!--Load socket.io.js-->
+	<script src="./pixi4.8.2.js"></script><!--load lenderer to lender-->
+	<script src="./control.js"></script><!--load control.js to control-->
+	<script src="./socket.js"></script><!--load socket.js to communicate-->
+<body onkeydown="keydown(event)" onkeyup="keyup(event)" onmousemove="GetMouseAngle(event)"><!--run those function when the condition established-->
+	<script src="./renderer.js"></script><!--load renderer, (!!must put it in the body or the document will not work)-->
 </body>
 </html>
