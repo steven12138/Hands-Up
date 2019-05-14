@@ -126,25 +126,49 @@ function UpdateMainCharacterRotate()
 //move map to let player think the main character is moving
 function MoveMainCharacter()
 {
-	if(DeltaX&&DeltaY)
+	var MoveDeltaX=DeltaX;
+	var MoveDeltaY=DeltaY;
+	if(parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))>=6200||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))>=6200||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))>=6200||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))>=6200||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))<=1||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))<=1||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))<=1||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))<=1)
 	{
-		if(DeltaY>0)
-			DeltaY=5*Sqrt_2/2;
-		else
-			DeltaY=-(5*Sqrt_2/2);
-		if(DeltaX>0)
-			DeltaX=5*Sqrt_2/2;
-		else
-			DeltaX=-(5*Sqrt_2/2);
+		alert("Xtest");
+		MoveDeltaX=0;
 	}
-
+	if(parseInt(-(Map.y-DeltaY-(ClientHeight/2-2*(67/2))))>=3250||
+	   parseInt(-(Map.y-DeltaY-(ClientHeight/2)))>=3250||
+	   parseInt(-(Map.y-DeltaY-(ClientHeight/2-2*(67/2))))>=3250||
+	   parseInt(-(Map.y-DeltaY-(ClientHeight/2)))>=3250||
+	   parseInt(-(Map.y-DeltaY-(ClientHeight/2-2*(67/2))))<=0||
+	   parseInt(-(Map.y-DeltaY-(ClientHeight/2)))<=0||
+	   parseInt(-(Map.y-DeltaY-(ClientHeight/2-2*(67/2))))<=0||
+	   parseInt(-(Map.y-DeltaY-(ClientHeight/2)))<=0)
+	{
+		MoveDeltaY=0;
+	}
+	if(MoveDeltaY&&MoveDeltaX)
+	{
+		if(MoveDeltaY>0)
+			MoveDeltaY=5*Sqrt_2/2;
+		else
+			MoveDeltaY=-(5*Sqrt_2/2);
+		if(MoveDeltaX>0)
+			MoveDeltaX=5*Sqrt_2/2;
+		else
+			MoveDeltaX=-(5*Sqrt_2/2);
+	}
 	//if go x will get into the wall, stop the require
 	if(!WallCollisionBox[parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))][parseInt(-(Map.y-(ClientHeight/2-2*(67/2))))]
 	 &&!WallCollisionBox[parseInt(-(Map.x-DeltaX-(ClientWidth/2)))][parseInt(-(Map.y-(ClientHeight/2)))]
 	 &&!WallCollisionBox[parseInt(-(Map.x-DeltaX-(ClientWidth/2)))][parseInt(-(Map.y-(ClientHeight/2-2*(67/2))))]
 	 &&!WallCollisionBox[parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))][parseInt(-(Map.y-(ClientHeight/2)))])
 	{
-		Map.x-=DeltaX;
+		Map.x-=MoveDeltaX;
 	}
 
 	//if go y will get into the wall, stop the require
@@ -153,6 +177,6 @@ function MoveMainCharacter()
 	 &&!WallCollisionBox[parseInt(-(Map.x-(ClientWidth/2)))][parseInt(-(Map.y-DeltaY-(ClientHeight/2-2*(67/2))))]
 	 &&!WallCollisionBox[parseInt(-(Map.x-(ClientWidth/2-2*(57/2))))][parseInt(-(Map.y-DeltaY-(ClientHeight/2)))])
 	{
-		Map.y-=DeltaY;
+		Map.y-=MoveDeltaY;
 	}
 }
