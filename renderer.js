@@ -3,6 +3,7 @@ var MainCharacterX=100;
 var MainCharacterY=100;
 var ClientWidth = document.body.clientWidth;
 var ClientHeight = document.body.clientHeight;
+var Sqrt_2=Math.sqrt(2);
 
 //crate app to draw on it
 let app = new PIXI.Application({
@@ -93,6 +94,18 @@ function UpdateMainCharacterRotate()
 //move map to let player think the main character is moving
 function MoveMainCharacter()
 {
+	if(DeltaX&&DeltaY)
+	{
+		if(DeltaY>0)
+			DeltaY=5*Sqrt_2/2;
+		else
+			DeltaY=-(5*Sqrt_2/2);
+		if(DeltaX>0)
+			DeltaX=5*Sqrt_2/2;
+		else
+			DeltaX=-(5*Sqrt_2/2);
+	}
+
 	//if go x will get into the wall, stop the require
 	if(!WallCollisionBox[parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))][parseInt(-(Map.y-(ClientHeight/2-2*(67/2))))]
 	 &&!WallCollisionBox[parseInt(-(Map.x-DeltaX-(ClientWidth/2)))][parseInt(-(Map.y-(ClientHeight/2)))]
