@@ -1,14 +1,20 @@
+//get client size
 var MainCharacterX=100;
 var MainCharacterY=100;
 var ClientWidth = document.body.clientWidth;
 var ClientHeight = document.body.clientHeight;
+
+//crate app to draw on it
 let app = new PIXI.Application({
 	width: ClientWidth,
 	height: ClientHeight,
 	transparent: true,
 });
+//put the app to the html
 document.body.appendChild(app.view);
 
+
+//character and map object
 let MainCharacter;
 let Map;
 
@@ -19,6 +25,7 @@ PIXI.loader
 	.add("thief-normal","Image/MainChara-thief-normal.png")
 	.add("theif-lean","Image/MainChara-thief-lean.png")
 	.add("Map","Image/Map.png")
+	.add("Police-car","Image/PoliceCar.png")
 	.load(setup); //run setup() after finish loading
 
 
@@ -30,9 +37,31 @@ function setup()
 	app.ticker.add(delta=>GameLoop(delta)) //run gameloop() in each 1/60 sec
 }
 
-function AddMap()
+function AddMap()	
 {
 	Map = new PIXI.Sprite(PIXI.Texture.fromImage("Map"));//new PIXI object
+
+	//random born
+	var BornX=Math.floor((Math.random()*5500)+1);
+	var BornY=Math.floor((Math.random()*3000)+1);
+	BornX=-BornX;
+	BornY=-BornY;
+
+	//if born in the wall, reset the (x,y)
+	while(WallCollisionBox[parseInt(-(BornX-(ClientWidth/2-2*(57/2))))][parseInt(-(BornY-(ClientHeight/2-2*(67/2))))]
+	 ||WallCollisionBox[parseInt(-(BornX-(ClientWidth/2)))][parseInt(-(BornY-(ClientHeight/2)))]
+	 ||WallCollisionBox[parseInt(-(BornX-(ClientWidth/2)))][parseInt(-(BornY-(ClientHeight/2-2*(67/2))))]
+	 ||WallCollisionBox[parseInt(-(BornX-(ClientWidth/2-2*(57/2))))][parseInt(-(BornY-(ClientHeight/2)))])
+	{
+		BornX=Math.floor((Math.random()*5500)+1);
+		BornY=Math.floor((Math.random()*3000)+1);
+		BornX=-BornX;
+		BornY=-BornY;
+	}
+
+	//set map id;
+	Map.x=BornX;
+	Map.y=BornY;
 	app.stage.addChild(Map);//add to the app
 }
 
@@ -64,6 +93,21 @@ function UpdateMainCharacterRotate()
 //move map to let player think the main character is moving
 function MoveMainCharacter()
 {
-	Map.x-=DeltaX;
-	Map.y-=DeltaY;
+	//if go x will get into the wall, stop the require
+	if(!WallCollisionBox[parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))][parseInt(-(Map.y-(ClientHeight/2-2*(67/2))))]
+	 &&!WallCollisionBox[parseInt(-(Map.x-DeltaX-(ClientWidth/2)))][parseInt(-(Map.y-(ClientHeight/2)))]
+	 &&!WallCollisionBox[parseInt(-(Map.x-DeltaX-(ClientWidth/2)))][parseInt(-(Map.y-(ClientHeight/2-2*(67/2))))]
+	 &&!WallCollisionBox[parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))][parseInt(-(Map.y-(ClientHeight/2)))])
+	{
+		Map.x-=DeltaX;
+	}
+
+	//if go y will get into the wall, stop the require
+	if(!WallCollisionBox[parseInt(-(Map.x-(ClientWidth/2-2*(57/2))))][parseInt(-(Map.y-DeltaY-(ClientHeight/2-2*(67/2))))]
+	 &&!WallCollisionBox[parseInt(-(Map.x-(ClientWidth/2)))][parseInt(-(Map.y-DeltaY-(ClientHeight/2)))]
+	 &&!WallCollisionBox[parseInt(-(Map.x-(ClientWidth/2)))][parseInt(-(Map.y-DeltaY-(ClientHeight/2-2*(67/2))))]
+	 &&!WallCollisionBox[parseInt(-(Map.x-(ClientWidth/2-2*(57/2))))][parseInt(-(Map.y-DeltaY-(ClientHeight/2)))])
+	{
+		Map.y-=DeltaY;
+	}
 }
