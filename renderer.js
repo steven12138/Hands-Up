@@ -131,6 +131,12 @@ function UpdateMainCharacterRotate()
 	MainCharacterLean.rotation=MouseAngle;
 }
 
+//caculate the dis between you and other player
+function Distence(x1,y1,x2,y2)
+{
+	return parseInt(Math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2)));
+}
+
 //move map to let player think the main character is moving
 function MoveMainCharacter()
 {
@@ -160,6 +166,50 @@ function MoveMainCharacter()
 	{
 		MoveDeltaY=0;
 	}
+	//still have some bug on it so just comment them.
+	// var MinXMainCharacterOtherCharacter=100000;
+	// var MinYMainCharacterOtherChatacter=100000;
+
+	// //have collision with other players
+	// curPosition.forEach(function(e)
+	// {
+	// 	if(e['ID']!=ID)
+	// 	{
+	// 		//caculate the dis
+	// 		var MainCharacterPositionX=parseInt(ClientWidth/2-(57/2)-Map.x)+MoveDeltaX;
+	// 		var MainCharacterPositionY=parseInt(ClientWidth/2-(57/2)-Map.y);
+	// 		var OtherCharacterPositionX=e['x'];
+	// 		var OtherCharacterPositionY=e['y'];
+	// 		var DistenceMainCharacterOtherCharacter = Distence(MainCharacterPositionX,
+	// 														   MainCharacterPositionY,
+	// 														   OtherCharacterPositionX,
+	// 														   OtherCharacterPositionY
+	// 														  );
+	// 		if(DistenceMainCharacterOtherCharacter<57)
+	// 			MoveDeltaX=0;
+	// 		if(show) alert(DistenceMainCharacterOtherCharacter);
+	// 	}
+
+	// });
+	// curPosition.forEach(function(e)
+	// {
+	// 	if(e['ID']!=ID)
+	// 	{
+	// 		//caculate the dis
+	// 		var MainCharacterPositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
+	// 		var MainCharacterPositionY=parseInt(ClientWidth/2-(57/2)-Map.x)+MoveDeltaY;
+	// 		var OtherCharacterPositionX=e['x'];
+	// 		var OtherCharacterPositionY=e['y'];
+	// 		var DistenceMainCharacterOtherCharacter = Distence(MainCharacterPositionX,
+	// 														   MainCharacterPositionY,
+	// 														   OtherCharacterPositionX,
+	// 														   OtherCharacterPositionY
+	// 														  );
+	// 		if(DistenceMainCharacterOtherCharacter<57)
+	// 			MoveDeltaY=0;
+	// 	}
+
+	// });
 	if(MoveDeltaY&&MoveDeltaX)
 	{
 		if(MoveDeltaY>0)
@@ -207,13 +257,13 @@ function DrawOtherCharacter(d)
 
 		OtherPlayersNormal[d['ID']] = new PIXI.Sprite(PIXI.Texture.fromImage(d['type']+"-normal"));//new PIXI object
 		OtherPlayersLean[d['ID']] = new PIXI.Sprite(PIXI.Texture.fromImage(d['type']+"-lean"));//new PIXI object
-
+		//normal action
 		OtherPlayersNormal[d['ID']].anchor.x=0.5;//set anchor
 		OtherPlayersNormal[d['ID']].anchor.y=0.5;
 		OtherPlayersNormal[d['ID']].x=MapX;//set position
 		OtherPlayersNormal[d['ID']].y=MapY;
 		OtherPlayersNormal[d['ID']].visible=!d['action'];
-		//
+		//Lean action
 		OtherPlayersLean[d['ID']].anchor.x=0.5;//set anchor
 		OtherPlayersLean[d['ID']].anchor.y=0.5;
 		OtherPlayersLean[d['ID']].x=ClientWidth/2-(57/2);//set position
@@ -227,27 +277,39 @@ function DrawOtherCharacter(d)
 
 function DeleteCharacter(d)
 {
+	//remove other player from the app
 	app.stage.removeChild(OtherPlayersNormal[d['ID']]);
 	app.stage.removeChild(OtherPlayersNormal[d['ID']]);
+	//delete other player from the array
 	OtherPlayersNormal.splice(d['ID'],1);
 	OtherPlayersNormal.splice(d['ID'],1);
 }
 
+
+
 function MoveOtherCharacter()
 {
 	curPosition.forEach(function(e){
-		if(e['ID']!=ID)
+		if(e['ID']!=ID)//not yourself
 		{
+			//caculate the map position
 			var MapX=parseInt(Map.x+e['x']);
 			var MapY=parseInt(Map.y+e['y']);
+
+			//if you are not exist create other player
 			if(!OtherPlayersNormal[e['ID']])
 				DrawOtherCharacter(e);
+
+			//set position
 			OtherPlayersNormal[e['ID']].x=MapX;
 			OtherPlayersLean[e['ID']].x=MapX;
 			OtherPlayersNormal[e['ID']].y=MapY;
 			OtherPlayersLean[e['ID']].y=MapY;
+			//set rotation
 			OtherPlayersLean[e['ID']].rotation=e['rotation'];
 			OtherPlayersNormal[e['ID']].rotation=e['rotation'];
+
+			//set status
 			OtherPlayersNormal[e['ID']].visible=!e['status'];
 			OtherPlayersLean[e['ID']].visible=e['status'];
 		}
