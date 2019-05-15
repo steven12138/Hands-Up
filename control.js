@@ -66,7 +66,7 @@ function GetMouseAngle(event) {
 	if(MouseY>(ClientHeight/2-(67/2)))
 		MouseAngle+=Math.PI;
 }
-
+//change lean status
 function MouseDown(event)
 {
 	MainCharaLeanStatus=true;

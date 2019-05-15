@@ -20,15 +20,32 @@ Keys:
 use json set.
 like what you see
 */
+
+//let curPosition[id] be the id's Attributes
+
+/*
+d or curPosition:{
+	"name":player's name type in by the players,
+	"type":thief or police,
+	"ID":own id in the room,
+	"x":x position,
+	"y":y position,
+	"rotation":rotation,
+	"status":lean or normal,
+	"socketId":socketid, get when you connect, socketio will give you one
+}
+*/
 socket.on('SyncPosition',function(d){
     curPosition[d["ID"]]= d;
 });
 
+//get in when disconnected delete id from curPosition and Delete the character from the screen
 socket.on('SyncDisPosition',function(d){
 	curPosition.splice(d["ID"],1);
 	DeleteCharacter(d);
 });
 
+//get in when just connected, draw character on the screen
 socket.on('Create',function(d){
 	DrawOtherCharacter(d);
 });

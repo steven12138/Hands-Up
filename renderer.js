@@ -13,6 +13,10 @@ var MainCharacterType="police";
 else
 var MainCharacterType="thief";
 
+//value about holding things
+
+
+
 //crate app to draw on it
 let app = new PIXI.Application({
 	width: ClientWidth,
@@ -250,17 +254,21 @@ function DrawOtherCharacter(d)
 {
 	if(d['ID']!=ID)
 	{
+
+		//caculate the map position
 		var MapX=parseInt(ClientWidth/2-(57/2)-d['x']);
 		var MapY=parseInt(ClientHeight/2-(67/2)-d['y']);
 
 		OtherPlayersNormal[d['ID']] = new PIXI.Sprite(PIXI.Texture.fromImage(d['type']+"-normal"));//new PIXI object
 		OtherPlayersLean[d['ID']] = new PIXI.Sprite(PIXI.Texture.fromImage(d['type']+"-lean"));//new PIXI object
+
 		//normal action
 		OtherPlayersNormal[d['ID']].anchor.x=0.5;//set anchor
 		OtherPlayersNormal[d['ID']].anchor.y=0.5;
 		OtherPlayersNormal[d['ID']].x=MapX;//set position
 		OtherPlayersNormal[d['ID']].y=MapY;
 		OtherPlayersNormal[d['ID']].visible=!d['action'];
+
 		//Lean action
 		OtherPlayersLean[d['ID']].anchor.x=0.5;//set anchor
 		OtherPlayersLean[d['ID']].anchor.y=0.5;
@@ -268,11 +276,13 @@ function DrawOtherCharacter(d)
 		OtherPlayersLean[d['ID']].y=ClientHeight/2-(67/2);
 		OtherPlayersLean[d['ID']].visible=d['action'];
 
+		//draw them on the screen
 		app.stage.addChild(OtherPlayersLean[d['ID']]);
 		app.stage.addChild(OtherPlayersNormal[d['ID']]);
 	}
 }
 
+//run when other players disconnected.
 function DeleteCharacter(d)
 {
 	//remove other player from the app
@@ -284,7 +294,7 @@ function DeleteCharacter(d)
 }
 
 
-
+//move other character
 function MoveOtherCharacter()
 {
 	curPosition.forEach(function(e){
