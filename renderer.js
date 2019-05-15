@@ -3,6 +3,7 @@ var MainCharacterX=100;
 var MainCharacterY=100;
 var ClientWidth = document.body.clientWidth;
 var ClientHeight = document.body.clientHeight;
+//get sqrt(2) let the caculate easy
 var Sqrt_2=Math.sqrt(2);
 var Type=Math.floor((Math.random()*2)+1);
 var ID=Math.floor((Math.random()*100000)+1);
@@ -167,49 +168,46 @@ function MoveMainCharacter()
 		MoveDeltaY=0;
 	}
 	//still have some bug on it so just comment them.
-	// var MinXMainCharacterOtherCharacter=100000;
-	// var MinYMainCharacterOtherChatacter=100000;
+	
+	//have collision with other players
+	curPosition.forEach(function(e)
+	{
+		if(e['ID']!=ID)
+		{
+			//caculate the dis
+			var MainCharacterPositionX=parseInt(ClientWidth/2-(57/2)-Map.x)+MoveDeltaX;
+			var MainCharacterPositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
+			var OtherCharacterPositionX=e['x'];
+			var OtherCharacterPositionY=e['y'];
+			var DistenceMainCharacterOtherCharacter = Distence(MainCharacterPositionX,
+															   MainCharacterPositionY,
+															   OtherCharacterPositionX,
+															   OtherCharacterPositionY
+															  );
+			if(DistenceMainCharacterOtherCharacter<57)
+				MoveDeltaX=0;
+		}
 
-	// //have collision with other players
-	// curPosition.forEach(function(e)
-	// {
-	// 	if(e['ID']!=ID)
-	// 	{
-	// 		//caculate the dis
-	// 		var MainCharacterPositionX=parseInt(ClientWidth/2-(57/2)-Map.x)+MoveDeltaX;
-	// 		var MainCharacterPositionY=parseInt(ClientWidth/2-(57/2)-Map.y);
-	// 		var OtherCharacterPositionX=e['x'];
-	// 		var OtherCharacterPositionY=e['y'];
-	// 		var DistenceMainCharacterOtherCharacter = Distence(MainCharacterPositionX,
-	// 														   MainCharacterPositionY,
-	// 														   OtherCharacterPositionX,
-	// 														   OtherCharacterPositionY
-	// 														  );
-	// 		if(DistenceMainCharacterOtherCharacter<57)
-	// 			MoveDeltaX=0;
-	// 		if(show) alert(DistenceMainCharacterOtherCharacter);
-	// 	}
+	});
+	curPosition.forEach(function(e)
+	{
+		if(e['ID']!=ID)
+		{
+			//caculate the dis
+			var MainCharacterPositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
+			var MainCharacterPositionY=parseInt(ClientHeight/2-(67/2)-Map.y)+MoveDeltaY;
+			var OtherCharacterPositionX=e['x'];
+			var OtherCharacterPositionY=e['y'];
+			var DistenceMainCharacterOtherCharacter = Distence(MainCharacterPositionX,
+															   MainCharacterPositionY,
+															   OtherCharacterPositionX,
+															   OtherCharacterPositionY
+															  );
+			if(DistenceMainCharacterOtherCharacter<57)
+				MoveDeltaY=0;
+		}
 
-	// });
-	// curPosition.forEach(function(e)
-	// {
-	// 	if(e['ID']!=ID)
-	// 	{
-	// 		//caculate the dis
-	// 		var MainCharacterPositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
-	// 		var MainCharacterPositionY=parseInt(ClientWidth/2-(57/2)-Map.x)+MoveDeltaY;
-	// 		var OtherCharacterPositionX=e['x'];
-	// 		var OtherCharacterPositionY=e['y'];
-	// 		var DistenceMainCharacterOtherCharacter = Distence(MainCharacterPositionX,
-	// 														   MainCharacterPositionY,
-	// 														   OtherCharacterPositionX,
-	// 														   OtherCharacterPositionY
-	// 														  );
-	// 		if(DistenceMainCharacterOtherCharacter<57)
-	// 			MoveDeltaY=0;
-	// 	}
-
-	// });
+	});
 	if(MoveDeltaY&&MoveDeltaX)
 	{
 		if(MoveDeltaY>0)
