@@ -2,6 +2,7 @@ var DeltaX=0;  //player X Delta
 var DeltaY=0;  //player Y Delta
 var MouseAngle=0;  //player rotation angle
 var MainCharaLeanStatus=false;
+var show=false
 
 if(window.event)
 {
@@ -32,7 +33,7 @@ function keydown(event)
 	if(KeyName=='D')
 		DeltaX=5;
 	if(KeyName=='F')
-		alert(MainCharaLeanStatus);
+		show=true;
 }
 
 //the function will run when key up
@@ -49,6 +50,8 @@ function keyup(event)
 		DeltaY=0;
 	if(KeyNum=='A'||KeyNum=='D')
 		DeltaX=0;
+	if(KeyNum=='F')
+		show=false;
 }
 
 

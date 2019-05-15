@@ -2,7 +2,7 @@ var WallCollisionBox = new Array();
 for(var i=0;i<=6200;i++)
 {
 	WallCollisionBox[i]=new Array(i);
-	for(var j=0;j<=3250;j++)
+	for(var j=0;j<=3568;j++)
 	{
 		WallCollisionBox[i][j]=0;
 	}

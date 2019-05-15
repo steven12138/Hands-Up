@@ -1,7 +1,7 @@
 var socket=io("127.0.0.1:80");
 //修正，客户端直接即可
-
-function sendToServer(subName, Dict){
+var curPosition=new Array();
+function SendToServer(subName, Dict){
     socket.emit(subName, Dict);
 }
 
@@ -15,12 +15,25 @@ Keys:
     position(dict):
         x(positive int)
         y(positive int)
+
+2019.5.15:change
+use json set.
+like what you see
 */
-socket.on('syncPosition',function(d){
-    curPosition[d["name"]][d["ID"]]["x"] = d["position"]["x"];
-    curPosition[d["name"]][d["ID"]]["y"] = d["position"]["y"];
-})
+socket.on('SyncPosition',function(d){
+    curPosition[d["ID"]]= d;
+});
+
+socket.on('SyncDisPosition',function(d){
+	curPosition.splice(d["ID"],1);
+	DeleteCharacter(d);
+});
+
+socket.on('Create',function(d){
+	DrawOtherCharacter(d);
+});
+
 
 socket.on('sync_init',function(d){
     //
-})
+});

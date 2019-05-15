@@ -5,6 +5,8 @@ var ClientWidth = document.body.clientWidth;
 var ClientHeight = document.body.clientHeight;
 var Sqrt_2=Math.sqrt(2);
 var Type=Math.floor((Math.random()*2)+1);
+var ID=Math.floor((Math.random()*100000)+1);
+var Name="test";
 if(Type==1)
 var MainCharacterType="police";
 else
@@ -69,6 +71,11 @@ function AddMap()
 	//set map id;
 	Map.x=BornX;
 	Map.y=BornY;
+	var PositionX;
+	var PositionY;
+	PositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
+	PositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
+	SendToServer("create",{"name":Name,"ID":ID,"x":PositionX,"y":PositionY,"rotation":MouseAngle,"action":MainCharaLeanStatus,"type":MainCharacterType});
 	app.stage.addChild(Map);//add to the app
 }
 
@@ -100,6 +107,7 @@ function GameLoop(delta)
 	MoveMainCharacter();
 	UpdateMainCharacterRotate();
 	ChangeMainCharacterAction();
+	MoveOtherCharacter();
 }
 
 function ChangeMainCharacterAction()
@@ -129,22 +137,22 @@ function MoveMainCharacter()
 	var MoveDeltaX=DeltaX;
 	var MoveDeltaY=DeltaY;
 	//x axis out of the map
-	if(parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))>=6200||
-	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))>=6200||
-	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))>=6200||
-	   parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))>=6200||
-	   parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))<=0||
-	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))<=0||
-	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))<=0||
-	   parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))<=0)
+	if(parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))>=6195||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))>=6195||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))>=6195||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))>=6195||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))<=5||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))<=5||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2)))<=5||
+	   parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))<=5)
 	{
 		MoveDeltaX=0;
 	}
 	//y axis out of the map, already success
-	if(parseInt(-(Map.y-DeltaY-(ClientHeight/2-2*(67/2))))>=3250||
-	   parseInt(-(Map.y-DeltaY-(ClientHeight/2)))>=3250||
-	   parseInt(-(Map.y-DeltaY-(ClientHeight/2-2*(67/2))))>=3250||
-	   parseInt(-(Map.y-DeltaY-(ClientHeight/2)))>=3250||
+	if(parseInt(-(Map.y-DeltaY-(ClientHeight/2-2*(67/2))))>=3568||
+	   parseInt(-(Map.y-DeltaY-(ClientHeight/2)))>=3568||
+	   parseInt(-(Map.y-DeltaY-(ClientHeight/2-2*(67/2))))>=3568||
+	   parseInt(-(Map.y-DeltaY-(ClientHeight/2)))>=3568||
 	   parseInt(-(Map.y-DeltaY-(ClientHeight/2-2*(67/2))))<=0||
 	   parseInt(-(Map.y-DeltaY-(ClientHeight/2)))<=0||
 	   parseInt(-(Map.y-DeltaY-(ClientHeight/2-2*(67/2))))<=0||
@@ -180,4 +188,68 @@ function MoveMainCharacter()
 	{
 		Map.y-=MoveDeltaY;
 	}
+	var PositionX;
+	var PositionY;
+	PositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
+	PositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
+	SendToServer("SyncPosition",{"name":Name,"ID":ID,"x":PositionX,"y":PositionY,"rotation":MouseAngle,"action":MainCharaLeanStatus,"type":MainCharacterType});
+}
+
+let OtherPlayersNormal=new Array();
+let OtherPlayersLean=new Array();
+//draw other character
+function DrawOtherCharacter(d)
+{
+	if(d['ID']!=ID)
+	{
+		var MapX=parseInt(ClientWidth/2-(57/2)-d['x']);
+		var MapY=parseInt(ClientHeight/2-(67/2)-d['y']);
+
+		OtherPlayersNormal[d['ID']] = new PIXI.Sprite(PIXI.Texture.fromImage(d['type']+"-normal"));//new PIXI object
+		OtherPlayersLean[d['ID']] = new PIXI.Sprite(PIXI.Texture.fromImage(d['type']+"-lean"));//new PIXI object
+
+		OtherPlayersNormal[d['ID']].anchor.x=0.5;//set anchor
+		OtherPlayersNormal[d['ID']].anchor.y=0.5;
+		OtherPlayersNormal[d['ID']].x=MapX;//set position
+		OtherPlayersNormal[d['ID']].y=MapY;
+		OtherPlayersNormal[d['ID']].visible=!d['action'];
+		//
+		OtherPlayersLean[d['ID']].anchor.x=0.5;//set anchor
+		OtherPlayersLean[d['ID']].anchor.y=0.5;
+		OtherPlayersLean[d['ID']].x=ClientWidth/2-(57/2);//set position
+		OtherPlayersLean[d['ID']].y=ClientHeight/2-(67/2);
+		OtherPlayersLean[d['ID']].visible=d['action'];
+
+		app.stage.addChild(OtherPlayersLean[d['ID']]);
+		app.stage.addChild(OtherPlayersNormal[d['ID']]);
+	}
+}
+
+function DeleteCharacter(d)
+{
+	app.stage.removeChild(OtherPlayersNormal[d['ID']]);
+	app.stage.removeChild(OtherPlayersNormal[d['ID']]);
+	OtherPlayersNormal.splice(d['ID'],1);
+	OtherPlayersNormal.splice(d['ID'],1);
+}
+
+function MoveOtherCharacter()
+{
+	curPosition.forEach(function(e){
+		if(e['ID']!=ID)
+		{
+			var MapX=parseInt(Map.x+e['x']);
+			var MapY=parseInt(Map.y+e['y']);
+			if(!OtherPlayersNormal[e['ID']])
+				DrawOtherCharacter(e);
+			OtherPlayersNormal[e['ID']].x=MapX;
+			OtherPlayersLean[e['ID']].x=MapX;
+			OtherPlayersNormal[e['ID']].y=MapY;
+			OtherPlayersLean[e['ID']].y=MapY;
+			OtherPlayersLean[e['ID']].rotation=e['rotation'];
+			OtherPlayersNormal[e['ID']].rotation=e['rotation'];
+			OtherPlayersNormal[e['ID']].visible=!e['status'];
+			OtherPlayersLean[e['ID']].visible=e['status'];
+		}
+	});
 }
