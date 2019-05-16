@@ -12,7 +12,7 @@ if(Type==1)
 var MainCharacterType="police";
 else
 var MainCharacterType="thief";
-
+var HoldID=0;
 //value about holding things
 
 
@@ -175,30 +175,29 @@ function MoveMainCharacter()
 		MoveDeltaY=0;
 	}
 	//still have some bug on it so just comment them.
-	
 	//have collision with other players
 	curPosition.forEach(function(e)
 	{
-		if(e['ID']!=ID)
+		if(e['ID']!=ID&&e['ID']!=HoldID)
 		{
-			//caculate the dis
-			var MainCharacterPositionX=parseInt(ClientWidth/2-(57/2)-Map.x)+MoveDeltaX;
-			var MainCharacterPositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
-			var OtherCharacterPositionX=e['x'];
-			var OtherCharacterPositionY=e['y'];
-			var DistanceMainCharacterOtherCharacter = Distance(MainCharacterPositionX,
-															   MainCharacterPositionY,
-															   OtherCharacterPositionX,
-															   OtherCharacterPositionY
-															  );
-			if(DistanceMainCharacterOtherCharacter<57)
-				MoveDeltaX=0;
+				//caculate the dis
+				var MainCharacterPositionX=parseInt(ClientWidth/2-(57/2)-Map.x)+MoveDeltaX;
+				var MainCharacterPositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
+				var OtherCharacterPositionX=e['x'];
+				var OtherCharacterPositionY=e['y'];
+				var DistanceMainCharacterOtherCharacter = Distance(MainCharacterPositionX,
+																   MainCharacterPositionY,
+																   OtherCharacterPositionX,
+																   OtherCharacterPositionY
+																  );
+				if(DistanceMainCharacterOtherCharacter<57)
+					MoveDeltaX=0;
 		}
 
 	});
 	curPosition.forEach(function(e)
 	{
-		if(e['ID']!=ID)
+		if(e['ID']!=ID&&e['ID']!=HoldID)
 		{
 			//caculate the dis
 			var MainCharacterPositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
@@ -352,7 +351,6 @@ function MoveOtherCharacter()
 }
 
 //hold function
-var HoldID;
 var BeHold=false;
 var IsHold=false;
 
@@ -406,9 +404,31 @@ function MainCharacterBeMove(d)
 	var PositionY=d['y'];
 	var MapX=parseInt(ClientWidth/2-(57/2)-PositionX);
 	var MapY=parseInt(ClientHeight/2-(67/2)-PositionY);
-	Map.x=MapX;
-	Map.y=MapY;
-	SendToServer("SyncPosition",{"name":Name,"ID":ID,"x":PositionX,"y":PositionY,"rotation":MouseAngle,"action":MainCharaLeanStatus,"type":MainCharacterType});
+	if(!(parseInt(PositionX)>=6195)&&
+	   !(parseInt(PositionX)>=6195)&&
+	   !(parseInt(PositionX)>=6195)&&
+	   !(parseInt(PositionX)>=6195)&&
+	   !(parseInt(PositionX)<=5)&&
+	   !(parseInt(PositionX)<=5)&&
+	   !(parseInt(PositionX)<=5)&&
+	   !(parseInt(PositionX)<=5)&&
+	   !(parseInt(PositionY)>=3568)&&
+	   !(parseInt(PositionY)>=3568)&&
+	   !(parseInt(PositionY)>=3568)&&
+	   !(parseInt(PositionY)>=3568)&&
+	   !(parseInt(PositionY)<=0)&&
+	   !(parseInt(PositionY)<=0)&&
+	   !(parseInt(PositionY)<=0)&&
+	   !(parseInt(PositionY)<=0)&&
+	   !WallCollisionBox[parseInt(-(MapX-(ClientWidth/2-2*(57/2))))][parseInt(-(MapY-(ClientHeight/2-2*(67/2))))]
+	 &&!WallCollisionBox[parseInt(-(MapX-(ClientWidth/2)))][parseInt(-(MapY-(ClientHeight/2)))]
+	 &&!WallCollisionBox[parseInt(-(MapX-(ClientWidth/2)))][parseInt(-(MapY-(ClientHeight/2-2*(67/2))))]
+	 &&!WallCollisionBox[parseInt(-(MapX-(ClientWidth/2-2*(57/2))))][parseInt(-(MapY-(ClientHeight/2)))])
+	{
+		Map.x=MapX;
+		Map.y=MapY;
+		SendToServer("SyncPosition",{"name":Name,"ID":ID,"x":PositionX,"y":PositionY,"rotation":MouseAngle,"action":MainCharaLeanStatus,"type":MainCharacterType});
+	}
 }
 
 function TryDisHoldOtherCharacter()
@@ -423,4 +443,5 @@ function TryDisHoldOtherCharacter()
 	SendToServer("BeMove",{"HoldInformation":curPosition[HoldID],"Position":{"x":HoldCharacterX,"y":HoldCharacterY}});
 	SendToServer("DisHold",curPosition[HoldID]);
 	IsHold=false;
+	HoldID=0;
 }

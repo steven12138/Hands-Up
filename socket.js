@@ -57,6 +57,7 @@ socket.on('sync_init',function(d){
 
 socket.on('BeHold',function(){
 	BeHold=true;
+	alert("BeHold");
 });
 
 socket.on('BeMove',function(d){
@@ -64,6 +65,5 @@ socket.on('BeMove',function(d){
 });
 
 socket.on('DisHold',function(){
-	alert('dishold');
 	BeHold=false;
 });
