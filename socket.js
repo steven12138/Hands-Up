@@ -55,14 +55,20 @@ socket.on('sync_init', function(d){
     //
 });
 
+
+//change some value
 socket.on('BeHold', function(){
 	BeHold = true;
 });
 
+
+//move behold players
 socket.on('BeMove', function(d){
 	MainCharacterBeMove(d);
 });
 
+
+//dishold
 socket.on('DisHold', function(){
 	BeHold = false;
 });

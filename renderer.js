@@ -120,6 +120,7 @@ function GameLoop(delta)
 		MoveHoldCharacter();
 }
 
+//change lean or normal
 function ChangeMainCharacterAction()
 {
 	if(MainCharaLeanStatus)
@@ -178,8 +179,11 @@ function MoveMainCharacter()
 	}
 	//still have some bug on it so just comment them.
 	//have collision with other players
+
+	//arrayname.forEach(function(e){});is a way to look all members in the array
 	dataSync.forEach(function(e)
 	{
+		//not me and not the thing I hold
 		if(e['ID']!=ID&&e['ID']!=HoldID)
 		{
 				//caculate the dis
@@ -192,11 +196,14 @@ function MoveMainCharacter()
 																   OtherCharacterPositionX,
 																   OtherCharacterPositionY
 																  );
+				//if to close don't go
 				if(DistanceMainCharacterOtherCharacter<57)
 					MoveDeltaX=0;
 		}
 
 	});
+
+	//same with the upper one
 	dataSync.forEach(function(e)
 	{
 		if(e['ID']!=ID&&e['ID']!=HoldID)
@@ -268,6 +275,7 @@ function MoveMainCharacter()
 			}
 		});
 	}
+	//caculate the real position and send to the server.
 	var PositionX;
 	var PositionY;
 	PositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
@@ -358,8 +366,10 @@ function MoveOtherCharacter()
 var BeHold=false;
 var IsHold=false;
 
+//run when you push the mouse
 function TryHoldOtherCharacter()
 {
+	//because only can hold one person but forEach have no break
 	var FinishWhile=false;
 	dataSync.forEach(function(e)
 	{
@@ -378,11 +388,12 @@ function TryHoldOtherCharacter()
 																   OtherCharacterPositionY
 																  );
 				if(DistanceMainCharacterOtherCharacter<85)
+				if(DistanceMainCharacterOtherCharacter<85)//find people around me hold him
 				{
-					SendToServer("BeHold",dataSync[e['ID']]);
+					SendToServer("BeHold",dataSync[e['ID']]); //tell servr
 					IsHold=true;
-					HoldID=e['ID'];
-					FinishWhile=true;
+					HoldID=e['ID'];//remember the id you hold
+					FinishWhile=true;//same with break
 				}
 			}
 		}
@@ -392,22 +403,30 @@ function TryHoldOtherCharacter()
 
 function MoveHoldCharacter()
 {
+	//caculate the real position
 	var PositionX;
 	var PositionY;
 	PositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
 	PositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
+
+	//use sin and cos to caculate the position behold player should be
 	var HoldCharacterX=PositionX+57*Math.cos(MainCharacterNormal.rotation-Math.PI/2);
 	var HoldCharacterY=PositionY+57*Math.sin(MainCharacterNormal.rotation-Math.PI/2);
+
+	//send to the server
 	SendToServer("BeMove",{"HoldInformation":dataSync[HoldID],"Position":{"x":HoldCharacterX,"y":HoldCharacterY}});
 }
 
 
 function MainCharacterBeMove(d)
 {
+	//put the position out
 	var PositionX=d['x'];
 	var PositionY=d['y'];
+	//caculate the map position
 	var MapX=parseInt(ClientWidth/2-(57/2)-PositionX);
 	var MapY=parseInt(ClientHeight/2-(67/2)-PositionY);
+	//if not in the wall or out of the map, move yourself
 	if(!(parseInt(PositionX)>=6195)&&
 	   !(parseInt(PositionX)>=6195)&&
 	   !(parseInt(PositionX)>=6195)&&
@@ -431,21 +450,35 @@ function MainCharacterBeMove(d)
 	{
 		Map.x=MapX;
 		Map.y=MapY;
+		//sync
 		SendToServer("SyncData",{"name":Name,"ID":ID,"x":PositionX,"y":PositionY,"rotation":MouseAngle,"action":MainCharaLeanStatus,"type":MainCharacterType});
 	}
 }
 
+
+//run when you put your mouse up
 function TryDisHoldOtherCharacter()
 {
+	//if not hold anything, return
 	if(!IsHold) return ;
+
+	//cacluate the real position
 	var PositionX;
 	var PositionY;
 	PositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
 	PositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
+
+	//put the behold player out 110px to let you hard rehold again
 	var HoldCharacterX=PositionX+110*Math.cos(MainCharacterNormal.rotation-Math.PI/2);
 	var HoldCharacterY=PositionY+110*Math.sin(MainCharacterNormal.rotation-Math.PI/2);
+
+	//let behold player move
 	SendToServer("BeMove",{"HoldInformation":dataSync[HoldID],"Position":{"x":HoldCharacterX,"y":HoldCharacterY}});
+
+	//send to the behold player let him be able to control himself again
 	SendToServer("DisHold",dataSync[HoldID]);
+
+	//change some value
 	IsHold=false;
 	HoldID=0;
 }
