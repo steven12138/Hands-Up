@@ -109,10 +109,13 @@ function AddMainCharacter(MainCharacterType)
 //gameloop will run each 1/60 sec
 function GameLoop(delta)
 {
-	MoveMainCharacter();
+	if(!BeHold)
+		MoveMainCharacter();
 	UpdateMainCharacterRotate();
 	ChangeMainCharacterAction();
 	MoveOtherCharacter();
+	if(IsHold)
+		MoveHoldCharacter();
 }
 
 function ChangeMainCharacterAction()
@@ -230,6 +233,18 @@ function MoveMainCharacter()
 	 &&!WallCollisionBox[parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))][parseInt(-(Map.y-(ClientHeight/2)))])
 	{
 		Map.x-=MoveDeltaX;
+		curPosition.forEach(function(e){
+			if(e['ID']!=ID)//not yourself
+			{
+				//if you are not exist create other player
+				if(!OtherPlayersNormal[e['ID']])
+					DrawOtherCharacter(e);
+
+				//set position
+				OtherPlayersNormal[e['ID']].x-=MoveDeltaX;
+				OtherPlayersLean[e['ID']].x-=MoveDeltaX;
+			}
+		});
 	}
 
 	//if go y will get into the wall, stop the require
@@ -239,6 +254,18 @@ function MoveMainCharacter()
 	 &&!WallCollisionBox[parseInt(-(Map.x-(ClientWidth/2-2*(57/2))))][parseInt(-(Map.y-DeltaY-(ClientHeight/2)))])
 	{
 		Map.y-=MoveDeltaY;
+		curPosition.forEach(function(e){
+			if(e['ID']!=ID)//not yourself
+			{
+				//if you are not exist create other player
+				if(!OtherPlayersNormal[e['ID']])
+					DrawOtherCharacter(e);
+
+				//set position
+				OtherPlayersNormal[e['ID']].y-=MoveDeltaY;
+				OtherPlayersLean[e['ID']].y-=MoveDeltaY;
+			}
+		});
 	}
 	var PositionX;
 	var PositionY;
@@ -322,4 +349,66 @@ function MoveOtherCharacter()
 			OtherPlayersLean[e['ID']].visible=e['status'];
 		}
 	});
+}
+
+//hold function
+var HoldID;
+var BeHold=false;
+var IsHold=false;
+
+function TryHoldOtherCharacter()
+{
+	var FinishWhile=false;
+	curPosition.forEach(function(e)
+	{
+		if(!FinishWhile)
+		{
+			if(e['ID']!=ID)
+			{
+				//caculate the dis
+				var MainCharacterPositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
+				var MainCharacterPositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
+				var OtherCharacterPositionX=e['x'];
+				var OtherCharacterPositionY=e['y'];
+				var DistenceMainCharacterOtherCharacter = Distence(MainCharacterPositionX,
+																   MainCharacterPositionY,
+																   OtherCharacterPositionX,
+																   OtherCharacterPositionY
+																  );
+				alert(DistenceMainCharacterOtherCharacter);
+				if(DistenceMainCharacterOtherCharacter<85)
+				{
+					SendToServer("BeHold",curPosition[e['ID']]);
+					alert(e['ID']);
+					IsHold=true;
+					HoldID=e['ID'];
+					FinishWhile=true;
+				}
+			}
+		}
+
+	});
+}
+
+function MoveHoldCharacter()
+{
+	var PositionX;
+	var PositionY;
+	PositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
+	PositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
+	var HoldCharacterX=PositionX+57*Math.cos(MainCharacterNormal.rotation);
+	var HoldCharacterY=PositionY+57*Math.sin(MainCharacterNormal.rotation);
+	SendToServer("BeMove",{"HoldInformation":curPosition[HoldID],"Position":{"x":HoldCharacterX,"y":HoldCharacterY}})
+}
+
+
+function MainCharacterBeMove(d)
+{
+	var PositionX=d['x'];
+	var PositionY=d['y'];
+	var MapX=parseInt(ClientWidth/2-(57/2)-PositionX);
+	var MapY=parseInt(ClientHeight/2-(67/2)-PositionY);
+	Map.x=MapX;
+	Map.y=MapY;
+	SendToServer("SyncPosition",{"name":Name,"ID":ID,"x":PositionX,"y":PositionY,"rotation":MouseAngle,"action":MainCharaLeanStatus,"type":MainCharacterType});
 }

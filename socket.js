@@ -54,3 +54,12 @@ socket.on('Create',function(d){
 socket.on('sync_init',function(d){
     //
 });
+
+socket.on('BeHold',function(){
+	alert('behold');
+	BeHold=true;
+});
+
+socket.on('BeMove',function(d){
+	MainCharacterBeMove(d);
+});

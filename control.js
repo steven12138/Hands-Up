@@ -33,7 +33,7 @@ function keydown(event)
 	if(KeyName=='D')
 		DeltaX=5;
 	if(KeyName=='F')
-		show=true;
+		alert(HoldID);
 }
 
 //the function will run when key up
@@ -70,6 +70,7 @@ function GetMouseAngle(event) {
 function MouseDown(event)
 {
 	MainCharaLeanStatus=true;
+	TryHoldOtherCharacter();
 }
 
 function MouseUp(event)

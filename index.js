@@ -1,3 +1,8 @@
+/*
+2019-5-16 change
+add more space to let them be different and easy to find out
+*/
+
 var express = require('express');
 var app = express();
 var path =  require('path')
@@ -31,11 +36,26 @@ io.on('connection', function(socket){
   	playerlist[socket.id]=d;
   });
 
+
+
+  socket.on("BeHold",function(d){
+  	io.to(d['socketId']).emit("BeHold");
+  });
+
+
+
   //when the client connect will resive this
   socket.on("create",function(d){
   	console.log('get');
   	io.emit("Create",d);
   });
+
+
+  socket.on('BeMove',function(d){
+  	io.to(d['HoldInformation']['socketId']).emit("BeMove",d['Position']);
+  });
+
+
   socket.on("disconnect",function(){
   	console.log('dis');
 	var d=playerlist[socket.id];//note the client to remove the character
