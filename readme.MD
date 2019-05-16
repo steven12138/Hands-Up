@@ -12,3 +12,5 @@ write by socketio and pixijs
 # 2019.5.13-4 add map texture
 # 2019.5.14-1 update map texture and add wall on it
 ## We can not put map here please open (./Image/Map)
+# 2019.5.16 allow more than two players, add more textrue and change police car
+![Trash](./Image/TrashCan.png)
