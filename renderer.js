@@ -270,7 +270,7 @@ function MoveMainCharacter()
 	var PositionY;
 	PositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
 	PositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
-	SendToServer("SyncPosition",{"name":Name,"ID":ID,"x":PositionX,"y":PositionY,"rotation":MouseAngle,"action":MainCharaLeanStatus,"type":MainCharacterType});
+	SendToServer("SyncData",{"name":Name,"ID":ID,"x":PositionX,"y":PositionY,"rotation":MouseAngle,"action":MainCharaLeanStatus,"type":MainCharacterType});
 }
 
 let OtherPlayersNormal=new Array();
@@ -427,7 +427,7 @@ function MainCharacterBeMove(d)
 	{
 		Map.x=MapX;
 		Map.y=MapY;
-		SendToServer("SyncPosition",{"name":Name,"ID":ID,"x":PositionX,"y":PositionY,"rotation":MouseAngle,"action":MainCharaLeanStatus,"type":MainCharacterType});
+		SendToServer("SyncData",{"name":Name,"ID":ID,"x":PositionX,"y":PositionY,"rotation":MouseAngle,"action":MainCharaLeanStatus,"type":MainCharacterType});
 	}
 }
 

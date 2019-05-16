@@ -66,7 +66,7 @@ io.on('connection', function(socket){
   socket.on("disconnect",function(){
   	console.log('dis');
 	var d = playerlist[socket.id];//note the client to remove the character
-	io.emit("SyncDisPosition", d);
+	io.emit("SyncDisData", d);
   });
 });
 
