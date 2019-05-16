@@ -76,4 +76,5 @@ function MouseDown(event)
 function MouseUp(event)
 {
 	MainCharaLeanStatus=false;
+	TryDisHoldOtherCharacter();
 }

@@ -140,7 +140,7 @@ function UpdateMainCharacterRotate()
 }
 
 //caculate the dis between you and other player
-function Distence(x1,y1,x2,y2)
+function Distance(x1,y1,x2,y2)
 {
 	return parseInt(Math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2)));
 }
@@ -186,12 +186,12 @@ function MoveMainCharacter()
 			var MainCharacterPositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
 			var OtherCharacterPositionX=e['x'];
 			var OtherCharacterPositionY=e['y'];
-			var DistenceMainCharacterOtherCharacter = Distence(MainCharacterPositionX,
+			var DistanceMainCharacterOtherCharacter = Distance(MainCharacterPositionX,
 															   MainCharacterPositionY,
 															   OtherCharacterPositionX,
 															   OtherCharacterPositionY
 															  );
-			if(DistenceMainCharacterOtherCharacter<57)
+			if(DistanceMainCharacterOtherCharacter<57)
 				MoveDeltaX=0;
 		}
 
@@ -205,12 +205,12 @@ function MoveMainCharacter()
 			var MainCharacterPositionY=parseInt(ClientHeight/2-(67/2)-Map.y)+MoveDeltaY;
 			var OtherCharacterPositionX=e['x'];
 			var OtherCharacterPositionY=e['y'];
-			var DistenceMainCharacterOtherCharacter = Distence(MainCharacterPositionX,
+			var DistanceMainCharacterOtherCharacter = Distance(MainCharacterPositionX,
 															   MainCharacterPositionY,
 															   OtherCharacterPositionX,
 															   OtherCharacterPositionY
 															  );
-			if(DistenceMainCharacterOtherCharacter<57)
+			if(DistanceMainCharacterOtherCharacter<57)
 				MoveDeltaY=0;
 		}
 
@@ -370,16 +370,14 @@ function TryHoldOtherCharacter()
 				var MainCharacterPositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
 				var OtherCharacterPositionX=e['x'];
 				var OtherCharacterPositionY=e['y'];
-				var DistenceMainCharacterOtherCharacter = Distence(MainCharacterPositionX,
+				var DistanceMainCharacterOtherCharacter = Distance(MainCharacterPositionX,
 																   MainCharacterPositionY,
 																   OtherCharacterPositionX,
 																   OtherCharacterPositionY
 																  );
-				alert(DistenceMainCharacterOtherCharacter);
-				if(DistenceMainCharacterOtherCharacter<85)
+				if(DistanceMainCharacterOtherCharacter<85)
 				{
 					SendToServer("BeHold",curPosition[e['ID']]);
-					alert(e['ID']);
 					IsHold=true;
 					HoldID=e['ID'];
 					FinishWhile=true;
@@ -396,9 +394,9 @@ function MoveHoldCharacter()
 	var PositionY;
 	PositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
 	PositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
-	var HoldCharacterX=PositionX+57*Math.cos(MainCharacterNormal.rotation);
-	var HoldCharacterY=PositionY+57*Math.sin(MainCharacterNormal.rotation);
-	SendToServer("BeMove",{"HoldInformation":curPosition[HoldID],"Position":{"x":HoldCharacterX,"y":HoldCharacterY}})
+	var HoldCharacterX=PositionX+57*Math.cos(MainCharacterNormal.rotation-Math.PI/2);
+	var HoldCharacterY=PositionY+57*Math.sin(MainCharacterNormal.rotation-Math.PI/2);
+	SendToServer("BeMove",{"HoldInformation":curPosition[HoldID],"Position":{"x":HoldCharacterX,"y":HoldCharacterY}});
 }
 
 
@@ -411,4 +409,18 @@ function MainCharacterBeMove(d)
 	Map.x=MapX;
 	Map.y=MapY;
 	SendToServer("SyncPosition",{"name":Name,"ID":ID,"x":PositionX,"y":PositionY,"rotation":MouseAngle,"action":MainCharaLeanStatus,"type":MainCharacterType});
+}
+
+function TryDisHoldOtherCharacter()
+{
+	if(!IsHold) return ;
+	var PositionX;
+	var PositionY;
+	PositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
+	PositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
+	var HoldCharacterX=PositionX+90*Math.cos(MainCharacterNormal.rotation-Math.PI/2);
+	var HoldCharacterY=PositionY+90*Math.sin(MainCharacterNormal.rotation-Math.PI/2);
+	SendToServer("BeMove",{"HoldInformation":curPosition[HoldID],"Position":{"x":HoldCharacterX,"y":HoldCharacterY}});
+	SendToServer("DisHold",curPosition[HoldID]);
+	IsHold=false;
 }

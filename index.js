@@ -56,6 +56,13 @@ io.on('connection', function(socket){
   });
 
 
+
+  socket.on("DisHold",function(d){
+  	console.log("dishold");
+  	io.to(d['socketId']).emit("DisHold");
+  });
+
+
   socket.on("disconnect",function(){
   	console.log('dis');
 	var d=playerlist[socket.id];//note the client to remove the character
