@@ -1,13 +1,13 @@
-var socket=io("127.0.0.1:80");
+var socket = io("127.0.0.1:80");
 //修正，客户端直接即可
-var curPosition=new Array();
+var dataSync = new Array();
 function SendToServer(subName, Dict){
     socket.emit(subName, Dict);
 }
 
 /*
-syncPosition(d)事件
-作用：把d中的位置信息同步到本地的curPosition数组
+syncData(d)事件
+作用：把d中的信息同步到本地的dataSync数组
 参数：d(dict)
 Keys:
     name(str): 同步对象的名称，如Police,Thief,TrashC
@@ -21,10 +21,10 @@ use json set.
 like what you see
 */
 
-//let curPosition[id] be the id's Attributes
+//let curData[id] be the id's Attributes
 
 /*
-d or curPosition:{
+d or curData:{
 	"name":player's name type in by the players,
 	"type":thief or police,
 	"ID":own id in the room,
@@ -35,35 +35,35 @@ d or curPosition:{
 	"socketId":socketid, get when you connect, socketio will give you one
 }
 */
-socket.on('SyncPosition',function(d){
-    curPosition[d["ID"]]= d;
+socket.on('SyncData', function(d){
+    dataSync[d["ID"]]= d;
 });
 
-//get in when disconnected delete id from curPosition and Delete the character from the screen
-socket.on('SyncDisPosition',function(d){
-	curPosition.splice(d["ID"],1);
+//get in when disconnected delete id from curData and Delete the character from the screen
+socket.on('SyncDisData', function(d){
+	dataSync.splice(d["ID"],1);
 	DeleteCharacter(d);
 });
 
 //get in when just connected, draw character on the screen
-socket.on('Create',function(d){
+socket.on('Create', function(d){
 	DrawOtherCharacter(d);
 });
 
 
-socket.on('sync_init',function(d){
+socket.on('sync_init', function(d){
     //
 });
 
-socket.on('BeHold',function(){
-	BeHold=true;
+socket.on('BeHold', function(){
+	BeHold = true;
 	alert("BeHold");
 });
 
-socket.on('BeMove',function(d){
+socket.on('BeMove', function(d){
 	MainCharacterBeMove(d);
 });
 
-socket.on('DisHold',function(){
-	BeHold=false;
+socket.on('DisHold', function(){
+	BeHold = false;
 });

@@ -176,7 +176,7 @@ function MoveMainCharacter()
 	}
 	//still have some bug on it so just comment them.
 	//have collision with other players
-	curPosition.forEach(function(e)
+	dataSync.forEach(function(e)
 	{
 		if(e['ID']!=ID&&e['ID']!=HoldID)
 		{
@@ -195,7 +195,7 @@ function MoveMainCharacter()
 		}
 
 	});
-	curPosition.forEach(function(e)
+	dataSync.forEach(function(e)
 	{
 		if(e['ID']!=ID&&e['ID']!=HoldID)
 		{
@@ -232,7 +232,7 @@ function MoveMainCharacter()
 	 &&!WallCollisionBox[parseInt(-(Map.x-DeltaX-(ClientWidth/2-2*(57/2))))][parseInt(-(Map.y-(ClientHeight/2)))])
 	{
 		Map.x-=MoveDeltaX;
-		curPosition.forEach(function(e){
+		dataSync.forEach(function(e){
 			if(e['ID']!=ID)//not yourself
 			{
 				//if you are not exist create other player
@@ -253,7 +253,7 @@ function MoveMainCharacter()
 	 &&!WallCollisionBox[parseInt(-(Map.x-(ClientWidth/2-2*(57/2))))][parseInt(-(Map.y-DeltaY-(ClientHeight/2)))])
 	{
 		Map.y-=MoveDeltaY;
-		curPosition.forEach(function(e){
+		dataSync.forEach(function(e){
 			if(e['ID']!=ID)//not yourself
 			{
 				//if you are not exist create other player
@@ -323,7 +323,7 @@ function DeleteCharacter(d)
 //move other character
 function MoveOtherCharacter()
 {
-	curPosition.forEach(function(e){
+	dataSync.forEach(function(e){
 		if(e['ID']!=ID)//not yourself
 		{
 			//caculate the map position
@@ -357,7 +357,7 @@ var IsHold=false;
 function TryHoldOtherCharacter()
 {
 	var FinishWhile=false;
-	curPosition.forEach(function(e)
+	dataSync.forEach(function(e)
 	{
 		if(!FinishWhile)
 		{
@@ -375,7 +375,7 @@ function TryHoldOtherCharacter()
 																  );
 				if(DistanceMainCharacterOtherCharacter<85)
 				{
-					SendToServer("BeHold",curPosition[e['ID']]);
+					SendToServer("BeHold",dataSync[e['ID']]);
 					IsHold=true;
 					HoldID=e['ID'];
 					FinishWhile=true;
@@ -394,7 +394,7 @@ function MoveHoldCharacter()
 	PositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
 	var HoldCharacterX=PositionX+57*Math.cos(MainCharacterNormal.rotation-Math.PI/2);
 	var HoldCharacterY=PositionY+57*Math.sin(MainCharacterNormal.rotation-Math.PI/2);
-	SendToServer("BeMove",{"HoldInformation":curPosition[HoldID],"Position":{"x":HoldCharacterX,"y":HoldCharacterY}});
+	SendToServer("BeMove",{"HoldInformation":dataSync[HoldID],"Position":{"x":HoldCharacterX,"y":HoldCharacterY}});
 }
 
 
@@ -440,8 +440,8 @@ function TryDisHoldOtherCharacter()
 	PositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
 	var HoldCharacterX=PositionX+90*Math.cos(MainCharacterNormal.rotation-Math.PI/2);
 	var HoldCharacterY=PositionY+90*Math.sin(MainCharacterNormal.rotation-Math.PI/2);
-	SendToServer("BeMove",{"HoldInformation":curPosition[HoldID],"Position":{"x":HoldCharacterX,"y":HoldCharacterY}});
-	SendToServer("DisHold",curPosition[HoldID]);
+	SendToServer("BeMove",{"HoldInformation":dataSync[HoldID],"Position":{"x":HoldCharacterX,"y":HoldCharacterY}});
+	SendToServer("DisHold",dataSync[HoldID]);
 	IsHold=false;
 	HoldID=0;
 }

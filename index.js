@@ -20,7 +20,7 @@ app.get('/', function(req, res){
 io.on('connection', function(socket){
   console.log('a user connected');
   //resive the message that sync the position
-  socket.on("SyncPosition",function(d){
+  socket.on("SyncData",function(d){
   	//remember the socketid and other imformation
   	var d={
   		"name":d['name'],
@@ -32,7 +32,7 @@ io.on('connection', function(socket){
   		"status":d['action'],
   		"socketId":socket.id
   	};
-  	io.emit("SyncPosition",d);//send back
+  	io.emit("SyncData",d);//send back
   	playerlist[socket.id]=d;
   });
 
@@ -47,12 +47,12 @@ io.on('connection', function(socket){
   //when the client connect will resive this
   socket.on("create",function(d){
   	console.log('get');
-  	io.emit("Create",d);
+  	io.emit("Create", d);
   });
 
 
   socket.on('BeMove',function(d){
-  	io.to(d['HoldInformation']['socketId']).emit("BeMove",d['Position']);
+  	io.to(d['HoldInformation']['socketId']).emit("BeMove", d['Position']);
   });
 
 
@@ -65,8 +65,8 @@ io.on('connection', function(socket){
 
   socket.on("disconnect",function(){
   	console.log('dis');
-	var d=playerlist[socket.id];//note the client to remove the character
-	io.emit("SyncDisPosition",d);
+	var d = playerlist[socket.id];//note the client to remove the character
+	io.emit("SyncDisPosition", d);
   });
 });
 
