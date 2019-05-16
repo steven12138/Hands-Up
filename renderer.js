@@ -15,7 +15,7 @@ var MainCharacterType="thief";
 var HoldID=0;
 //value about holding things
 
-
+var MapLoadFinish=false;
 
 //crate app to draw on it
 let app = new PIXI.Application({
@@ -46,7 +46,8 @@ PIXI.loader
 
 function setup()
 {
-	AddMap();  //add map to the webside
+	if(!MapLoadFinish)
+		AddMap();  //add map to the webside
 	AddMainCharacter(MainCharacterType);//add character to the webside
 	app.ticker.add(delta=>GameLoop(delta)) //run gameloop() in each 1/60 sec
 }
@@ -82,6 +83,7 @@ function AddMap()
 	PositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
 	SendToServer("create",{"name":Name,"ID":ID,"x":PositionX,"y":PositionY,"rotation":MouseAngle,"action":MainCharaLeanStatus,"type":MainCharacterType});
 	app.stage.addChild(Map);//add to the app
+	MapLoadFinish=true;
 }
 
 function AddMainCharacter(MainCharacterType)
@@ -278,6 +280,8 @@ let OtherPlayersLean=new Array();
 //draw other character
 function DrawOtherCharacter(d)
 {
+	if(!MapLoadFinish)
+		AddMap();
 	if(d['ID']!=ID)
 	{
 
@@ -331,7 +335,7 @@ function MoveOtherCharacter()
 			var MapY=parseInt(Map.y+e['y']);
 
 			//if you are not exist create other player
-			if(!OtherPlayersNormal[e['ID']])
+			if(!OtherPlayersNormal[e['ID']]||!OtherPlayersLean[e['ID']])
 				DrawOtherCharacter(e);
 
 			//set position
@@ -438,8 +442,8 @@ function TryDisHoldOtherCharacter()
 	var PositionY;
 	PositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
 	PositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
-	var HoldCharacterX=PositionX+90*Math.cos(MainCharacterNormal.rotation-Math.PI/2);
-	var HoldCharacterY=PositionY+90*Math.sin(MainCharacterNormal.rotation-Math.PI/2);
+	var HoldCharacterX=PositionX+110*Math.cos(MainCharacterNormal.rotation-Math.PI/2);
+	var HoldCharacterY=PositionY+110*Math.sin(MainCharacterNormal.rotation-Math.PI/2);
 	SendToServer("BeMove",{"HoldInformation":dataSync[HoldID],"Position":{"x":HoldCharacterX,"y":HoldCharacterY}});
 	SendToServer("DisHold",dataSync[HoldID]);
 	IsHold=false;

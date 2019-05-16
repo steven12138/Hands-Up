@@ -33,7 +33,7 @@ function keydown(event)
 	if(KeyName=='D')
 		DeltaX=5;
 	if(KeyName=='F')
-		show=true;
+		alert(OtherPlayersNormal.length);
 }
 
 //the function will run when key up

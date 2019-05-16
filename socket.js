@@ -57,7 +57,6 @@ socket.on('sync_init', function(d){
 
 socket.on('BeHold', function(){
 	BeHold = true;
-	alert("BeHold");
 });
 
 socket.on('BeMove', function(d){
