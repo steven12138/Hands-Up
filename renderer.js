@@ -388,7 +388,7 @@ function TryHoldOtherCharacter()
 																   OtherCharacterPositionX,
 																   OtherCharacterPositionY
 																  );
-				if(DistanceMainCharacterOtherCharacter<85)//find people around me hold him
+				if(DistanceMainCharacterOtherCharacter<85&&MainCharacterType=='police'&&e['type']=="thief")//find people around me hold him
 				{
 					SendToServer("BeHold",dataSync[e['ID']]); //tell servr
 					IsHold=true;
