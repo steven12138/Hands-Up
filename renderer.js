@@ -369,6 +369,7 @@ var IsHold=false;
 //run when you push the mouse
 function TryHoldOtherCharacter()
 {
+	if (BeHold) return;
 	//because only can hold one person but forEach have no break
 	var FinishWhile=false;
 	dataSync.forEach(function(e)
