@@ -39,7 +39,11 @@ PIXI.loader
 	.add("thief-normal","Image/MainChara-thief-normal.png")
 	.add("thief-lean","Image/MainChara-thief-lean.png")
 	.add("Map","Image/Map.png")
-	.add("Police-car","Image/PoliceCar.png")
+	.add("TrashCan","Image/TrashCan.png")
+	.add("TrashCanFell","Image/TrashCan-Fell.png")
+	.add("Treasure","Image/Treasuer.png")
+	.add("Chest","Image/Chest.png")
+	.add("ChestOpen","Image/Chest-Open.png")
 	.load(setup); //run setup() after finish loading
 
 
@@ -482,4 +486,12 @@ function TryDisHoldOtherCharacter()
 	//change some value
 	IsHold=false;
 	HoldID=0;
+}
+
+var TrashCanStatus=new Array();
+
+function AddTrashCan()
+{
+	//1st TrashCan
+
 }
