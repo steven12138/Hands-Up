@@ -51,7 +51,9 @@ function keyup(event)
 	if(KeyNum=='A'||KeyNum=='D')
 		DeltaX=0;
 	if(KeyNum=='F')
-		show=false;
+	{
+		alert(TrashCan[1].x);
+	}
 }
 
 

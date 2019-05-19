@@ -41,7 +41,7 @@ PIXI.loader
 	.add("Map","Image/Map.png")
 	.add("TrashCan","Image/TrashCan.png")
 	.add("TrashCanFell","Image/TrashCan-Fell.png")
-	.add("Treasure","Image/Treasuer.png")
+	.add("Treasure","Image/Treasure.png")
 	.add("Chest","Image/Chest.png")
 	.add("ChestOpen","Image/Chest-Open.png")
 	.load(setup); //run setup() after finish loading
@@ -53,6 +53,7 @@ function setup()
 	if(!MapLoadFinish)
 		AddMap();  //add map to the webside
 	AddMainCharacter(MainCharacterType);//add character to the webside
+	DrawTrashCan();
 	app.ticker.add(delta=>GameLoop(delta)) //run gameloop() in each 1/60 sec
 }
 
@@ -489,9 +490,62 @@ function TryDisHoldOtherCharacter()
 }
 
 var TrashCanStatus=new Array();
+var TrashCan=new Array();
+var TrashCanFell=new Array()
+var TrashCanPosition=new Array();
 
-function AddTrashCan()
+function AddTrashCan(CanID,Position)
 {
-	//1st TrashCan
+	//normal
+	TrashCan[CanID]= new PIXI.Sprite(PIXI.Texture.fromImage("TrashCan"));
+	var PositionX=Position['x'];
+	var PositionY=Position['y'];
+	TrashCanPosition[CanID]=Position;
+	//sp-mp=pp
+	//so=pp-mp;
+	var ScreenX=PositionX+Map.x;
+	var ScreenY=PositionY+Map.y;
+	TrashCan[CanID].x=ScreenX;
+	TrashCan[CanID].y=ScreenY;
+	
+	//Fell
+	TrashCanFell[CanID]=new PIXI.Sprite(PIXI.Texture.fromImage("TrashCanFell"));
+	TrashCanFell[CanID].x=ScreenX;
+	TrashCanFell[CanID].y=ScreenY;
+	
+	//set normal status
+	TrashCanStatus[CanID]=false;
 
+	//change visiable
+	TrashCan[CanID].visible=!TrashCanStatus[CanID];
+	TrashCanFell[CanID].visible=TrashCanStatus[CanID];
+
+	//draw them
+	app.stage.addChild(TrashCanFell[CanID]);
+	app.stage.addChild(TrashCan[CanID]);
+}
+
+function DrawTrashCan()
+{
+
+	//1716,2969
+	AddTrashCan(1,{'x':10,'y':10});
+	AddTrashCan(2,{'x':2215,'y':755});
+	AddTrashCan(3,{'x':2815,'y':1848});
+	AddTrashCan(4,{'x':5240,'y':860});
+}
+
+function MoveTrashCan()
+{
+	for(var i=1;i<=4;i++)
+	{
+		var PositionX=TrashCanPosition['x'];
+		var PositionY=TrashCanPosition['y'];
+		var ScreenX=10+Map.x;
+		var ScreenY=10+Map.y;
+		TrashCan[i].x=ScreenX;
+		TrashCan[i].y=ScreenY;
+		TrashCanFell[i].x=ScreenX;
+		TrashCanFell[i].y=ScreenY;
+	}
 }
