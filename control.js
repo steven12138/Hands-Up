@@ -52,7 +52,7 @@ function keyup(event)
 		DeltaX=0;
 	if(KeyNum=='F')
 	{
-		alert(TrashCan[1].x);
+		alert(TrashCanPosition[1]['x']);
 	}
 }
 

@@ -47,13 +47,15 @@ PIXI.loader
 	.load(setup); //run setup() after finish loading
 
 
+var TrashCanLoadFinish=false;
 
 function setup()
 {
 	if(!MapLoadFinish)
 		AddMap();  //add map to the webside
+	if(!TrashCanLoadFinish)
+		DrawTrashCan();
 	AddMainCharacter(MainCharacterType);//add character to the webside
-	DrawTrashCan();
 	app.ticker.add(delta=>GameLoop(delta)) //run gameloop() in each 1/60 sec
 }
 
@@ -123,6 +125,7 @@ function GameLoop(delta)
 	MoveOtherCharacter();
 	if(IsHold)
 		MoveHoldCharacter();
+	MoveTrashCan();
 }
 
 //change lean or normal
@@ -295,6 +298,8 @@ function DrawOtherCharacter(d)
 {
 	if(!MapLoadFinish)
 		AddMap();
+	if(!TrashCanLoadFinish)
+		DrawTrashCan();
 	if(d['ID']!=ID)
 	{
 
@@ -502,16 +507,23 @@ function AddTrashCan(CanID,Position)
 	var PositionY=Position['y'];
 	TrashCanPosition[CanID]=Position;
 	//sp-mp=pp
-	//so=pp-mp;
-	var ScreenX=PositionX+Map.x;
-	var ScreenY=PositionY+Map.y;
-	TrashCan[CanID].x=ScreenX;
-	TrashCan[CanID].y=ScreenY;
+	//mp=-sp-pp;
+	var MapX=parseInt(PositionX+Map.x);
+	Temp=MapX;
+	var MapY=parseInt(PositionY+Map.y);
+	TrashCan[CanID].x=MapX;
+	TrashCan[CanID].y=MapY;
+	TrashCan[CanID].anchor.x=0.5;
+	TrashCan[CanID].anchor.y=0.5;
+	TrashCan[CanID].rotation=Position['rotation'];
 	
 	//Fell
 	TrashCanFell[CanID]=new PIXI.Sprite(PIXI.Texture.fromImage("TrashCanFell"));
-	TrashCanFell[CanID].x=ScreenX;
-	TrashCanFell[CanID].y=ScreenY;
+	TrashCanFell[CanID].x=MapX;
+	TrashCanFell[CanID].y=MapY;
+	TrashCanFell[CanID].anchor.x=0.5;
+	TrashCanFell[CanID].anchor.y=0.5;
+	TrashCanFell[CanID].rotation=Position['rotation'];
 	
 	//set normal status
 	TrashCanStatus[CanID]=false;
@@ -529,23 +541,27 @@ function DrawTrashCan()
 {
 
 	//1716,2969
-	AddTrashCan(1,{'x':10,'y':10});
-	AddTrashCan(2,{'x':2215,'y':755});
-	AddTrashCan(3,{'x':2815,'y':1848});
-	AddTrashCan(4,{'x':5240,'y':860});
+	AddTrashCan(1,{'x':1771,'y':3006,'rotation':Math.PI/2});
+	AddTrashCan(2,{'x':2255,'y':802,'rotation':0});
+	AddTrashCan(3,{'x':2861,'y':1890,'rotation':Math.PI/2});
+	AddTrashCan(4,{'x':5298,'y':902,'rotation':Math.PI/2});
+	TrashCanLoadFinish=true;
 }
+
+var Temp;
 
 function MoveTrashCan()
 {
 	for(var i=1;i<=4;i++)
 	{
-		var PositionX=TrashCanPosition['x'];
-		var PositionY=TrashCanPosition['y'];
-		var ScreenX=10+Map.x;
-		var ScreenY=10+Map.y;
-		TrashCan[i].x=ScreenX;
-		TrashCan[i].y=ScreenY;
-		TrashCanFell[i].x=ScreenX;
-		TrashCanFell[i].y=ScreenY;
+		var PositionX=TrashCanPosition[i]['x'];
+		var PositionY=TrashCanPosition[i]['y'];
+		var MapX=parseInt(PositionX+Map.x);
+		var MapY=parseInt(PositionY+Map.y);
+		TrashCan[i].x=MapX;
+		TrashCan[i].y=MapY;
+		TrashCanFell[i].visible=true;
+		TrashCanFell[i].x=MapX;
+		TrashCanFell[i].y=MapY;
 	}
 }
