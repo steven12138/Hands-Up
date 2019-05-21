@@ -67,6 +67,16 @@ socket.on('BeMove', function(d){
 	MainCharacterBeMove(d);
 });
 
+socket.on('TrashCanStatusChange',function(d){
+	TrashCanStatus[d['id']]=d['Status'];
+});
+
+socket.on('InitTrashCan',function(d){
+	TrashCanStatus[1]=d[1];
+	TrashCanStatus[2]=d[2];
+	TrashCanStatus[3]=d[3];
+	TrashCanStatus[4]=d[4];
+});
 
 //dishold
 socket.on('DisHold', function(){

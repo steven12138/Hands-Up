@@ -15,6 +15,7 @@ app.use(express.static(__dirname));
 //init the playerlist
 var playerlist= new Array();
 
+var TrashCanStatus= new Array();
 //when the users require
 //send them this heml
 app.get('/', function(req, res){
@@ -56,6 +57,7 @@ io.on('connection', function(socket){
   	//let all players draw this player
   	console.log('get');
   	io.emit("Create", d);
+  	io.emit("InitTrashCan",TrashCanStatus);
   });
 
 
@@ -68,8 +70,16 @@ io.on('connection', function(socket){
 //sandback
   socket.on("DisHold",function(d){
   	console.log("dishold");
+  	TrashCanStatus[d['id']]=d['Status'];
   	io.to(d['socketId']).emit("DisHold");
   });
+
+
+  socket.on("TrashCanStatusChange",function(d){
+  	TrashCanStatus[d['id']]=d['Status'];
+  	io.emit('TrashCanStatusChange',d);
+  });
+
 
   //run when disconnect,
   //let other players remove him

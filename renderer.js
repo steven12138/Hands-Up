@@ -126,6 +126,7 @@ function GameLoop(delta)
 	if(IsHold)
 		MoveHoldCharacter();
 	MoveTrashCan();
+	TrashCanStatusChange();
 }
 
 //change lean or normal
@@ -184,6 +185,48 @@ function MoveMainCharacter()
 	   parseInt(-(Map.y-DeltaY-(ClientHeight/2)))<=0)
 	{
 		MoveDeltaY=0;
+	}
+	if(MainCharacterType=='police')
+	{
+		for(var i=1;i<=4;i++)
+		{
+			if(TrashCanStatus[i])
+			{
+				if(TrashCanPosition['rotation']==Math.PI/2)
+				{
+					var PositionY1=TrashCanPosition[i]['y']-110;
+					var PositionY2=TrashCanPosition[i]['y']+110;
+					var PositionX=TrashCanPosition[i]['x'];
+					
+					var PlayerPositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
+					var PlayerPositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
+					if(show)
+						alert(Math.abs(PlayerPositionX+MoveDeltaX-PositionX)<200);
+					if(Math.abs(PlayerPositionX+MoveDeltaX-PositionX)<=200)
+					{
+						alert('true');
+						MoveDeltaX=0;
+					}
+					// if(Math.abs(PlayerPositionX-PositionX)<=67&&
+					//    PlayerPositionY+MoveDeltaY>=PositionY1&&
+					//    PlayerPositionY+MoveDeltaY<=PositionY2)
+					// {
+					// 	MoveDeltaY=0;
+					// }
+					// if(Math.abs(PlayerPositionX+MoveDeltaX-PositionX)<=67&&
+					//    PlayerPositionY+MoveDeltaY>=PositionY1&&
+					//    PlayerPositionY+MoveDeltaY<=PositionY2)
+					// {
+					// 	MoveDeltaX=0;
+					// 	MoveDeltaY=0;
+					// }
+				}
+				else
+				{
+
+				}
+			}
+		}
 	}
 	//still have some bug on it so just comment them.
 	//have collision with other players
@@ -509,12 +552,13 @@ function AddTrashCan(CanID,Position)
 	//sp-mp=pp
 	//mp=-sp-pp;
 	var MapX=parseInt(PositionX+Map.x);
-	Temp=MapX;
 	var MapY=parseInt(PositionY+Map.y);
 	TrashCan[CanID].x=MapX;
 	TrashCan[CanID].y=MapY;
 	TrashCan[CanID].anchor.x=0.5;
-	TrashCan[CanID].anchor.y=0.5;
+	TrashCan[CanID].anchor.y=0.5
+	TrashCan[CanID].scale.x=0.9;
+	TrashCan[CanID].scale.y=0.9;
 	TrashCan[CanID].rotation=Position['rotation'];
 	
 	//Fell
@@ -523,6 +567,8 @@ function AddTrashCan(CanID,Position)
 	TrashCanFell[CanID].y=MapY;
 	TrashCanFell[CanID].anchor.x=0.5;
 	TrashCanFell[CanID].anchor.y=0.5;
+	TrashCanFell[CanID].scale.x=0.7;
+	TrashCanFell[CanID].scale.y=0.7;
 	TrashCanFell[CanID].rotation=Position['rotation'];
 	
 	//set normal status
@@ -560,8 +606,38 @@ function MoveTrashCan()
 		var MapY=parseInt(PositionY+Map.y);
 		TrashCan[i].x=MapX;
 		TrashCan[i].y=MapY;
-		TrashCanFell[i].visible=true;
+		TrashCan[i].visible=!TrashCanStatus[i];
+		TrashCanFell[i].visible=TrashCanStatus[i];
 		TrashCanFell[i].x=MapX;
 		TrashCanFell[i].y=MapY;
+	}
+}
+
+function TrashCanStatusChange()
+{
+	var PositionX;
+	var PositionY;
+	PositionX=parseInt(ClientWidth/2-(57/2)-Map.x);
+	PositionY=parseInt(ClientHeight/2-(67/2)-Map.y);
+	for(var i=1;i<=4;i++)
+	{
+		var ObjectPositionX=TrashCanPosition[i]['x'];
+		var ObjectPositionY=TrashCanPosition[i]['y'];
+		var DistanceMainCharacterTrashCan=Distance(PositionX,
+												   PositionY,
+												   ObjectPositionX,
+												   ObjectPositionY
+												   );
+		Temp=DistanceMainCharacterTrashCan;
+		if(DistanceMainCharacterTrashCan<=57&&MainCharacterType=="thief"&&!TrashCanStatus[i]&&(!MainCharaLeanStatus||IsHold))
+		{
+			TrashCanStatus[i]=true;
+			SendToServer('TrashCanStatusChange',{'id':i,"Status":true});
+		}
+		if(DistanceMainCharacterTrashCan<=80&&!IsHold&&MainCharaLeanStatus&&TrashCanStatus[i])
+		{
+			TrashCanStatus[i]=false;
+			SendToServer('TrashCanStatusChange',{'id':i,"Status":false});
+		}
 	}
 }
